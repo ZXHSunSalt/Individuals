@@ -5,4 +5,6 @@ import argparse
 import os
 import logging
 import pymysql
+
+from database import db
 from conf import config

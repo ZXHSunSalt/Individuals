@@ -33,8 +33,9 @@ class Camera1(object):
                     # get all encodings form database and transfome them from array_str to list
                     all_data_from_db = self.db._get_data('face_encodings')
                     data_transformed_from_db = func.array_str2list(all_data_from_db)
+                    data_transformed_length = len(data_transformed_from_db)
 
-                    if len(data_transformed_from_db) == 0:
+                    if data_transformed_length == 0:
                         for i in range(crop_imgs_length):
                             crop_img_encoding = face_recognition.face_encodings(crop_imgs[i])
                             self.db._insert_data('face_encodings', ['faceid', 'encoding'], [str(current_time), str(crop_img_encoding[0].tolist())])

@@ -1,9 +1,13 @@
 from database.__init__ import *
+import conf
 
+ip = conf.config["ip"]
+user_name = conf.config["user_name"]
+psword = conf.config["psword"]
 
 class Database():
     def __init__(self, database_name):
-        self.db = pymysql.connect("localhost", "root", "jhx123456", database_name)
+        self.db = pymysql.connect(ip, user_name, psword, database_name)
         self.cursor = self.db.cursor()
 
     def _commit(self):
@@ -30,6 +34,11 @@ class Database():
         sql = "INSERT INTO %s "%(sheet_name) + key + " VALUES " + value
         self.cursor.execute(sql)
 
+    def _delete_data(self, datasheet_name, condition):
+        sql = "DELETE FROM %s"%(datasheet_name) + " WHERE " + condition
+        print(sql)
+        self.cursor.execute(sql)
+
     def _get_data(self, sheet_name):
         sql = "SELECT * FROM %s "%(sheet_name)
         self.cursor.execute(sql)
@@ -38,5 +47,7 @@ class Database():
 
 if __name__ == "__main__":
 
-    database = Database()
+    database = Database('face_recognition')
+    # database._delete_data('face_encodings', 'faceid=1562567096.094495')
+    # database._commit()
 

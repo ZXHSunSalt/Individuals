@@ -3,6 +3,7 @@ import argparse
 import face_recognition
 import numpy as np
 
+from database import db
 from conf import config
 
 
@@ -113,3 +114,14 @@ def array_str2list(data_from_database):
         new_lists.append(item)
     return new_lists
 
+def get_transform_data(frame):
+    # get crop_image and the encoding of image
+    crop_imgs = crop_face(frame)  # crom_imgs-> nparray
+    crop_imgs_length = len(crop_imgs)
+
+    # get all encodings form database and transfome them from array_str to list
+    all_data_from_db = db._get_data('face_encodings')
+    data_transformed_from_db = array_str2list(all_data_from_db)
+    data_transformed_length = len(data_transformed_from_db)
+
+    return data_transformed_from_db, crop_imgs, crop_imgs_length, data_transformed_length
