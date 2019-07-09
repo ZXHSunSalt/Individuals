@@ -6,6 +6,7 @@ import numpy as np
 from database import db
 from conf import config
 
+init_db = db.Database('face_recognition')
 
 def parse_args():
     '''parse args'''
@@ -66,10 +67,10 @@ def match_face(encodings_from_db, new_crop_encoding):
     f_count = 0
     threshold = config["threshold"]
 
-    matches = face_recognition.compare_faces(encodings_from_db, new_crop_encoding[0])
+    matches = face_recognition.compare_faces(encodings_from_db, new_crop_encoding) #matches -> bool
 
     # the first params of face_distance : -> list of array, the second para -> nparray
-    distances = face_recognition.face_distance(encodings_from_db, new_crop_encoding[0])
+    distances = face_recognition.face_distance(encodings_from_db, new_crop_encoding)
     max_distance = np.argmax(distances)
 
     for item in matches:
@@ -111,16 +112,17 @@ def array_str2list(data_from_database):
         peoples[faceid] = encoding
 
         item = np.array(eval(peoples[faceid]))
-        new_lists.append(item)
+        new_lists.append([faceid, item])
     return new_lists
 
 def get_transform_data(frame):
+
     # get crop_image and the encoding of image
     crop_imgs = crop_face(frame)  # crom_imgs-> nparray
     crop_imgs_length = len(crop_imgs)
 
     # get all encodings form database and transfome them from array_str to list
-    all_data_from_db = db._get_data('face_encodings')
+    all_data_from_db = init_db._get_data('face_encodings')
     data_transformed_from_db = array_str2list(all_data_from_db)
     data_transformed_length = len(data_transformed_from_db)
 

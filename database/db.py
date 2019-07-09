@@ -39,7 +39,7 @@ class Database():
         print(sql)
         self.cursor.execute(sql)
 
-    def _get_data(self, sheet_name):
+    def _get_data(self, sheet_name: object) -> object:
         sql = "SELECT * FROM %s "%(sheet_name)
         self.cursor.execute(sql)
         all_data = self.cursor.fetchall()
