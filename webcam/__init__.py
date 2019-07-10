@@ -5,6 +5,7 @@ import argparse
 import os
 import logging
 import pymysql
+import time
 
 from database import db
 from conf import config

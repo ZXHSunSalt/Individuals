@@ -71,7 +71,14 @@ def match_face(encodings_from_db, new_crop_encoding):
 
     # the first params of face_distance : -> list of array, the second para -> nparray
     distances = face_recognition.face_distance(encodings_from_db, new_crop_encoding)
-    max_distance = np.argmax(distances)
+    print(distances)
+
+    # max_distance = np.argmax(distances)
+    max_distance = max(distances)
+    # if max_distance > threshold:
+    #     f_count += 1
+    # else:
+    #     t_count += 1
 
     for item in matches:
         if item == True:
